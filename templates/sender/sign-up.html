@@ -1,7 +1,7 @@
 <!doctype>
 <html>
     <head>
-        <script src="/static/main.js"></script>
+        <script defer src="/static/main.js"></script>
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
         <link rel="icon" href="/static/image/logoSamolot.jpg" sizes="16x16" type="image/png">
@@ -21,28 +21,32 @@
         <form>
             <div class="form-group">
             <label for="firstname">Imię</label>
-            <input type="email" class="form-control" id="firstname" aria-describedby="firstname" placeholder="Wpisz Imię">
+            <input type="email" class="form-control" id="firstname" aria-describedby="firstname" placeholder="Wpisz Imię" />
             <small id="podpowiedzEmail" class="form-text text-muted">W powyższym polu wpisujesz swoje imię.</small>
           </div>
             <div class="form-group">
             <label for="lastname">Nazwisko</label>
-            <input type="email" class="form-control" id="lastname" aria-describedby="lastname" placeholder="Wpisz nazwisko">
+            <input type="email" class="form-control" id="lastname" aria-describedby="lastname" placeholder="Wpisz nazwisko" />
             <small id="nazwisko" class="form-text text-muted">W powyższym polu wpisujesz swoje nazwisko.</small>
           </div>
 
             <div class="form-group">
-            <label for="username">Login</label>
-            <input type="username" class="form-control" id="username" aria-describedby="username" placeholder="Wpisz swój login">
-            <small id="username" class="form-text text-muted">W powyższym polu wpisujesz swój login.</small>
+            <label for="login-input">Login</label>
+            <input type="email" class="form-control" id="login-input"  aria-describedby="username" placeholder="Wpisz swój login" />
+            <small id="username-komunikat" class="form-text text-muted">W powyższym polu wpisujesz swój login.</small>
+                <p id="login-error"></p>
+
           </div>
 
           <div class="form-group">
             <label for="Wpisz hasło">Hasło</label>
-            <input type="password" class="form-control" id="paswword1" placeholder="Wpisz hasło">
+            <input type="password" class="form-control-plaintext" id="password-input1" placeholder="Wpisz hasło" />
+              <p id="password-error1"></p>
           </div>
           <div class="form-group">
-            <label for="Wpisz ponownie hasło">Hasło</label>
-            <input type="password" class="form-control" id="password2" placeholder="Wpisz ponownie hasło">
+            <label for="Wpisz ponownie hasło">Powtórz hasło</label>
+            <input type="password" class="form-control-plaintext" id="password-input2" placeholder="Wpisz ponownie hasło" />
+               <p id="password-error2"></p>
           </div>
 
             <div class="form-group">

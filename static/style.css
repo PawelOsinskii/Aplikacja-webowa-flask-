@@ -25,4 +25,14 @@
   color: white;
 }
 
-body {margin:20px;padding:20px}
+#login-error {
+    color: red;
+}
+
+#password-error1 {
+  color: red;
+}
+
+#password-error2 {
+  color: red;
+}
