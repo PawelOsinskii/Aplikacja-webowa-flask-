@@ -1,24 +1,30 @@
 <!doctype>
 <html>
-    <head></head>
+    <head>
+        <script src="/static/main.js"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    </head>
     <body>
-        <form>
-            <ul>
-                <li>
-                    <input type ="text" name="firstname" placeholder="Imię" />
-                </li>
-                 <li>
-                    <input type ="text" name="lastname" placeholder="Nazwisko" />
-                </li>
-                 <li>
-                    <input type ="text" name="username" placeholder="Nazwa użytkownika" />
-                </li>
-                 <li>
-                    <input type ="submit" name="submit" placeholder="Zarejestruj" />
-                </li>
-            </ul>
-        </form>
+     <div class="topnav">
+        <a class="active" href="#">Home</a>
+        <a href="/sender/sign-up">Sign-Up</a>
+        <a href="#contact">Contact</a>
+        <a href="#about">About</a>
+    </div>
+
+
+
+
     </body>
+<footer class="page-footer font-small unique-color-dark pt-4">
+
+  <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <a href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+  </div>
+
+
+</footer>
 
 
 </html>
