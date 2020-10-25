@@ -4,30 +4,57 @@
         <script src="/static/main.js"></script>
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+        <link rel="icon" href="/static/image/logoSamolot.jpg" sizes="16x16" type="image/png">
     </head>
-    <body>
-     <div class="topnav">
+
+    <div class="topnav">
         <a  href="/">Home</a>
         <a class="active" href="#news">Sign-Up</a>
-        <a href="#contact">Contact</a>
-        <a href="#about">About</a>
     </div>
+    <body>
+
+        <div class="m-lg-5">
         <form>
-            <ul>
-                <li>
-                    <input type ="text" name="firstname" placeholder="Imię" />
-                </li>
-                 <li>
-                    <input type ="text" name="lastname" placeholder="Nazwisko" />
-                </li>
-                 <li>
-                    <input type ="text" name="username" placeholder="Nazwa użytkownika" />
-                </li>
-                 <li>
-                    <input type ="submit" name="submit" placeholder="Zarejestruj" />
-                </li>
-            </ul>
+            <div class="form-group">
+            <label for="firstname">Imię</label>
+            <input type="email" class="form-control" id="firstname" aria-describedby="firstname" placeholder="Wpisz Imię">
+            <small id="podpowiedzEmail" class="form-text text-muted">W powyższym polu wpisujesz swoje imię.</small>
+          </div>
+            <div class="form-group">
+            <label for="lastname">Nazwisko</label>
+            <input type="email" class="form-control" id="lastname" aria-describedby="lastname" placeholder="Wpisz nazwisko">
+            <small id="nazwisko" class="form-text text-muted">W powyższym polu wpisujesz swoje nazwisko.</small>
+          </div>
+
+            <div class="form-group">
+            <label for="username">Login</label>
+            <input type="username" class="form-control" id="username" aria-describedby="username" placeholder="Wpisz swój login">
+            <small id="username" class="form-text text-muted">W powyższym polu wpisujesz swój login.</small>
+          </div>
+
+          <div class="form-group">
+            <label for="Wpisz hasło">Hasło</label>
+            <input type="password" class="form-control" id="paswword1" placeholder="Wpisz hasło">
+          </div>
+          <div class="form-group">
+            <label for="Wpisz ponownie hasło">Hasło</label>
+            <input type="password" class="form-control" id="password2" placeholder="Wpisz ponownie hasło">
+          </div>
+
+            <div class="form-group">
+            <label for="avatar">Wgraj swoje zdjęcie profilowe</label>
+            <input type="file" class="form-control-file" id="Avatar">
+          </div>
+
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="regulamin">
+            <label class="form-check-label" for="regulamin">Akceptuję regulamin</label>
+          </div>
+          <button type="submit" class="btn btn-primary">Zarejestruj</button>
+
         </form>
+    </div>
+
     </body>
 
 
@@ -35,7 +62,7 @@
 <footer class="page-footer font-small unique-color-dark pt-4">
 
   <div class="footer-copyright text-center py-3">© 2020 Copyright:
-    <a href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+    <a href="https://github.com/PawelOsinskii/aplikacjewebowe" target="_blank"> github</a>
   </div>
 
 
