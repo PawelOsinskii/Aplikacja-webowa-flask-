@@ -21,6 +21,18 @@
 
 /* Add a color to the active/current link */
 .topnav a.active {
-  background-color: #4CAF50;
+  background-color: blue;
   color: white;
+}
+
+#login-error {
+    color: red;
+}
+
+#password-error1 {
+  color: red;
+}
+
+#password-error2 {
+  color: red;
 }
