@@ -36,3 +36,14 @@
 #password-error2 {
   color: red;
 }
+#firstname-error {
+  color: red;
+}
+
+#lastname-error {
+  color: red;
+}
+
+#login-good {
+  color: green;
+}

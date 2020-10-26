@@ -1,28 +1,14 @@
-from flask import Flask, render_template, make_response, request
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 app.debug = False
 
-users = {'posinski': {'firstname': 'Pawel', 'lastname': 'Osinski'
-                      }
-         }
-
-
-@app.route('/check/<username>', methods=["GET"])
-def check(username):
-    origin = request.headers.get('Origin')
-    result = {username: 'available'}
-    if username in users:
-        result = {username: 'taken'}
-    response = make_response(result, 200)
-    if origin is not None:
-        response.headers["Access-Control-Allow-Origin"] = origin
-
 
 @app.route('/')
 def mainPage():
     return render_template("index.html")
+
 
 @app.route('/sender/sign-up')
 def signUp():
@@ -31,6 +17,4 @@ def signUp():
 
 if __name__ == '__main__':
     app.run()
-"""formularz z podświetlanymi danymi na bieżąco
-wyodrębnić 3 elementy: document.html, arkusz stylów, kod w javascripcie 
-czy rzeczywiscie te 3 elementy są odseperowane od siebie będzie to sprawdzał"""
+
