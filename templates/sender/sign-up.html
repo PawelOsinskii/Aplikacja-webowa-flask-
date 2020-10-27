@@ -18,17 +18,17 @@
 <body>
 
 <div class="m-lg-5">
-    <form>
+    <form method="POST" action="https://infinite-hamlet-29399.herokuapp.com/sender/register" enctype="multipart/form-data" id="registerForm">
         <div class="form-group">
             <label for="firstname">First Name</label>
-            <input type="input" class="form-control" id="firstname" aria-describedby="firstname"
+            <input type="input" class="form-control" id="firstname" name="firstname" aria-describedby="firstname"
                    placeholder="FirstName"/>
             <small id="imię" class="form-text text-muted">here is place for your name.</small>
             <p id="firstname-error"></p>
         </div>
         <div class="form-group">
             <label for="lastname">Last name</label>
-            <input type="input" class="form-control" id="lastname" aria-describedby="lastname"
+            <input type="input" class="form-control" name="lastname" id="lastname" aria-describedby="lastname"
                    placeholder="Lastname"/>
             <small id="nazwisko" class="form-text text-muted">here is place for your lastname</small>
             <p id="lastname-error"></p>
@@ -36,7 +36,7 @@
 
         <div class="form-group">
             <label for="login-input">Login</label>
-            <input type="input" class="form-control" id="login-input" aria-describedby="username"
+            <input type="input" class="form-control" name="login" id="login-input" aria-describedby="username"
                    placeholder="Login"/>
             <small id="username-komunikat" class="form-text text-muted">here is place for your login</small>
             <p id="login-error"></p>
@@ -46,7 +46,7 @@
 
         <div class="form-group">
             <label for="Wpisz hasło">Password</label>
-            <input type="password" class="form-control" id="password-input1" placeholder="Password"/>
+            <input name="password" type="password" class="form-control" id="password-input1" placeholder="Password"/>
             <p id="password-error1"></p>
         </div>
         <div class="form-group">
@@ -58,19 +58,19 @@
 
         <div class="form-group">
             <label for="avatar">Upload your picture</label>
-            <input type="file" class="form-control-file" id="Avatar">
+            <input type="file" name="photo" class="form-control-file" id="Avatar" required>
         </div>
         <br>
 
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="M"
+            <input class="form-check-input" name="sex" type="radio" name="exampleRadios" id="exampleRadios1" value="M"
                    checked>
             <label class="form-check-label" for="exampleRadios1">
                 Male
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="F">
+            <input name="sex" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="F">
             <label class="form-check-label" for="exampleRadios2">
                 Female
             </label>
