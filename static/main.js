@@ -7,7 +7,7 @@ const button = document.querySelector('#register');
 
 const BASE_URL = 'https://infinite-hamlet-29399.herokuapp.com/check';
 const errorMessagelogin = 'Username has already exist';
-const errorMessageLogin2 = 'Login is too short!';
+const errorMessageLogin2 = 'Login has to have between 4 and 12 chars!';
 let validName = false;
 let validPassword = false;
 let validLogin = false;
@@ -29,10 +29,10 @@ const isInputTextMatch = (inputText, username) => {
 }
 
 firstNameInput.addEventListener('input', (evt )=>{
-    const regExp = new RegExp("[A-Z]{1}[a-z]");
+    const regExp = new RegExp("[A-ZŻŹĆĄŚĘŁÓŃ][a-zzżźćńółęąś]");
     if(!regExp.test(firstNameInput.value)){
         validName = false;
-        firstNameError.innerText = "Name has to have  first letter big = [A-Z]{1}[a-z]";
+        firstNameError.innerText = "Name has to have  first letter big = [A-Z{PL}][a-z{pl}]";
         checkButton();
     }
     else{
@@ -43,9 +43,9 @@ firstNameInput.addEventListener('input', (evt )=>{
 });
 
 lastNameInput.addEventListener('input', (evt )=>{
-    const regExp = new RegExp("[A-Z]{1}[a-z]");
+    const regExp = new RegExp("[A-ZŻŹĆĄŚĘŁÓŃ][a-zzżźćńółęąś]");
     if(!regExp.test(lastNameInput.value)){
-        lastNameError.innerText = "last name has to have  first letter big = [A-Z]{1}[a-z]";
+        lastNameError.innerText = "last name has to have  first letter big = [A-Z{PL}][a-z{pl}]";
     }
     else{
         lastNameError.innerText = "";
@@ -58,7 +58,7 @@ loginInput.addEventListener('input', (event) => {
     event.preventDefault();
     const inputText = event.target.value;
 
-    if (inputText.trim().length < 4) {
+    if (inputText.trim().length < 4 || inputText.trim().length > 12) {
         loginGood.innerText = "";
         loginError.innerHTML = errorMessageLogin2;
         validLogin = false;
