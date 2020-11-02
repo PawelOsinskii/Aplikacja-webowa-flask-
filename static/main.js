@@ -89,13 +89,22 @@ passwordInput1.addEventListener('input', (event) => {
     event.preventDefault();
     const inputText = event.target.value;
 
-    if (inputText.trim().length < 8) {
+    if (inputText.trim().length < 8  ) {
         validPassword = false;
         checkButton();
         passwordError1.innerHTML = "Password is too short. Minimum 8 characters";
+         passwordError2.innerHTML = "";
 
-    } else {
+    }
+    else if (passwordInput2.value.length > 7 && inputText != passwordInput2.value) {
+          passwordError2.innerHTML = "Passwords arent the same";
+          passwordError1.innerHTML="";
+          validPassword = false;
+          checkButton();
+      }
+    else {
         checkButton();
+        passwordError2.innerHTML="";
         passwordError1.innerHTML = "";
     }
 })
@@ -103,13 +112,20 @@ passwordInput1.addEventListener('input', (event) => {
 passwordInput2.addEventListener('input', (event) => {
     event.preventDefault();
     const inputText = event.target.value;
-    if (inputText != passwordInput1.value) {
+    if (inputText != passwordInput1.value ) {
         passwordError2.innerHTML = "Passwords arent the same";
         validPassword = false;
         checkButton();
-    } else {
+    } else if (inputText == passwordInput1.value &&  passwordInput1.value.length <8){
+        validPassword = false;
+        passwordError2.innerHTML = "";
+        passwordError1.innerHTML = "Password is too short";
+        checkButton();
+    }
+    else  {
         validPassword = true;
         passwordError2.innerHTML = "";
+        passwordError1.innerHTML = "";
         checkButton();
     }
 })
