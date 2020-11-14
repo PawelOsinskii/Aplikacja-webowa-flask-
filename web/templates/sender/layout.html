@@ -1,0 +1,42 @@
+<!doctype>
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+        <link rel="icon" href="static/image/logoSamolot.jpg" sizes="16x16" type="image/png">
+        <meta http-equiv="Content-type" content="text/html; charset=iso-8859-2" />
+        <meta http-equiv="Content-Language" content="pl" />
+        <meta name="Paweł Osiński" content="Cygnus" />
+        <title>Post Premium</title>
+    </head>
+
+     <div class="topnav">
+        <a class="active" href="#">Home</a>
+        <a href="/sender/register">Sign-Up</a></a>
+        <a href="/sender/login">Log-in</a></a>
+     </div>
+
+
+
+{% with messages = get_flashed_messages() %}
+ {% if messages %}
+ <ul class=flashes>
+ {% for message in messages %}
+ <li>{{ message }}</li>
+ {% endfor %}
+ </ul>
+ {% endif %}
+{% endwith %}
+
+
+<footer class="page-footer font-small unique-color-dark pt-4">
+
+  <div class="footer-copyright text-center py-3">? 2020 Copyright:
+    <a href="https://github.com/PawelOsinskii/aplikacjewebowe" target="_blank"> github</a>
+  </div>
+
+
+</footer>
+
+
+</html>
