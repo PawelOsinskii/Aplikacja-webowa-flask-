@@ -5,7 +5,7 @@ from flask import Flask, render_template, redirect, jsonify, g
 from flask import request, make_response, session
 from flask import flash, url_for
 from flask_session import Session
-from redis import Redis
+from redis import Redis, StrictRedis
 
 from os import getenv
 from dotenv import load_dotenv
@@ -14,7 +14,9 @@ from dotenv import load_dotenv
 
 load_dotenv()  # zaczytuje .env
 REDIS_LOKAL = getenv('REDIS_LOKAL')
-db = Redis(host=REDIS_LOKAL, port=6379, db=0)  # wczytywać połączenie z env
+REDIS_HOST = getenv('REDIS_HOST')
+REDIS_PASS = getenv('REDIS_PASS')
+db = StrictRedis(REDIS_HOST, db=12, password=REDIS_PASS)  # wczytywać połączenie z env
 SESSION_TYPE = 'redis'  # trzymanie danych sesyjnych w redisie
 SESSION_REDIS = db  # obiekt reprezentujacy połączene
 SESSION_COOKIE_SECURE = True
@@ -30,10 +32,6 @@ app.debug = False
 from bcrypt import hashpw, gensalt, checkpw
 
 
-# def generate_tracking_token():
-#   payload = {}
-#  token = encode(payload,)
-# return token
 
 def is_user(username):
     return db.hexists(f"user:{username}", "password")

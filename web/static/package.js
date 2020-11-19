@@ -11,7 +11,7 @@ const button = document.querySelector('#register');
 
 
 adress.addEventListener('input', (evt )=>{
-    const regExp = new RegExp("^[A-Za-z0-9_-]*$");
+    const regExp = new RegExp("^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$");
     if(!regExp.test(adress.value)){
         validAdress = false;
         adressError.innerText = "You can use only letters]";
@@ -25,7 +25,7 @@ adress.addEventListener('input', (evt )=>{
 });
 
 id_postbox.addEventListener('input', (evt )=>{
-    const regExp = new RegExp("^[A-Za-z0-9_-]*$");
+    const regExp = new RegExp("^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$");
     if(!regExp.test(id_postbox.value)){
         valid_id_postbox = false;
         id_postboxError.innerText = "You can use only letters]";
@@ -38,8 +38,9 @@ id_postbox.addEventListener('input', (evt )=>{
     }
 });
 
+
 size.addEventListener('input', (evt )=>{
-    const regExp = new RegExp("^[A-Za-z0-9_-]*$");
+    const regExp = new RegExp("^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$");
     if(!regExp.test(size.value)){
         valid_size = false;
         sizeError.innerText = "You can use only letters]";
