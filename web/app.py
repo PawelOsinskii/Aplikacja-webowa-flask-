@@ -1,5 +1,4 @@
 import uuid
-from datetime import timedelta
 import datetime
 from flask import Flask, render_template, redirect, jsonify, g
 from flask import request, make_response, session

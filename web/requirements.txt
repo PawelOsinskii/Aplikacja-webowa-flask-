@@ -1,7 +1,15 @@
-Flask
 Flask-Session
-gunicorn
+Flask==1.1.2
+gunicorn==19.9.0
 python-dotenv
 redis
 bcrypt
 jwt
+heroku
+uuid
+datetime
+Session
+session
+hashpw
+gensalt
+checkpw
