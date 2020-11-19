@@ -1,0 +1,118 @@
+<!doctype>
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+        <link rel="icon" href="static/image/logoSamolot.jpg" sizes="16x16" type="image/png">
+        <meta http-equiv="Content-Language" content="pl" />
+        <meta name="Pawel Osinski" content="Cygnus" />
+        <title>Post Premium</title>
+    </head>
+
+     <div class="topnav">
+        <a  href="/">Home</a>
+        <a href="/sender/register">Sign-Up</a>
+         <a  href="/sender/login">Log-in</a>
+         <a class="active" href="#">Dashboard</a>
+         <a href="/sender/logout">Logout</a>
+     </div>
+<body>
+
+{% block content %}
+<div class="container">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% block page_content %}{% endblock %}
+</div>
+{% endblock %}
+
+
+
+
+<div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Register you package</h5>
+            <form class="form-signin" method="POST" action="/sender/createpackage" enctype="multipart/form-data">
+              <div class="form-label-group">
+                 <input type="input" class="form-control" name="addressee" id="name-input" aria-describedby="addressee"
+                   placeholder="Addressee" required/>
+                <label for="name-input">Addressee</label>
+              </div>
+                <div class="form-label-group">
+                 <input type="input" class="form-control" name="id-postbox" id="id-postbox" aria-describedby="id-postbox"
+                   placeholder="ID post box" required/>
+                <label for="id-postbox">ID post box</label>
+              </div>
+                <div class="form-label-group">
+                 <input type="input" class="form-control" name="size" id="size-input" aria-describedby="username"
+                   placeholder="Size of package" required/>
+                <label for="size">Size of package</label>
+              </div>
+              <div class="custom-control custom-checkbox mb-3">
+                <input type="checkbox" class="custom-control-input" id="customCheck1" required>
+                <label class="custom-control-label" for="customCheck1">Accept rules</label>
+              </div>
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">send the package</button>
+              <hr class="my-4">
+            </form>
+             <a href="#"> <button class="btn btn-lg btn-google btn-block text-uppercase"><i class="fab fa-google mr-2"></i> Prizes</button></a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+              <th scope="col">Uid</th>
+            <th scope="col">Addressee</th>
+            <th scope="col">Size</th>
+            <th scope="col">ID post office box</th>
+            <th scope="col">Creation date</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+              <th scope="col">8f55d306-6274-4715-8e44-41cfca0e5872</th>
+            <th scope="row">1</th>
+            <td>Bootstrap 4 CDN and Starter Template</td>
+            <td>Cristina</td>
+            <td>2.846</td>
+            <td>
+            <button type="button" class="btn btn-dark">Delete<i class="far fa-trash-alt"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+
+<footer class="page-footer font-small unique-color-dark pt-4">
+
+  <div class="footer-copyright text-center py-3">? 2020 Copyright:
+    <a href="https://github.com/PawelOsinskii/aplikacjewebowe" target="_blank"> github (develop)</a>
+  </div>
+
+
+</footer>
+
+
+</html>
