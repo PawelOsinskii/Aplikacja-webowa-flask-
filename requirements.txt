@@ -8,7 +8,6 @@ jwt
 heroku
 uuid
 datetime
-Session
 session
 hashpw
 gensalt
