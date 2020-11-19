@@ -5,6 +5,3 @@ python-dotenv
 redis
 bcrypt
 jwt
-heroku
-uuid
-datetime
