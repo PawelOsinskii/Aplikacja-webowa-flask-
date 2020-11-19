@@ -1,0 +1,118 @@
+<!doctype>
+<html>
+    <head>
+        <script defer src="/static/package.js"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+        <link rel="icon" href="static/image/logoSamolot.jpg" sizes="16x16" type="image/png">
+        <meta http-equiv="Content-Language" content="pl" />
+        <meta name="Pawel Osinski" content="Cygnus" />
+        <title>Post Premium</title>
+    </head>
+
+     <div class="topnav">
+        <a  href="/">Home</a>
+         <a  href="/sender/login">Profile</a>
+         <a class="active" href="#">Dashboard</a>
+         <a href="/sender/logout">Logout</a>
+     </div>
+<body>
+
+
+<div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Register you package</h5>
+            <form class="form-signin" method="POST" action="/sender/createpackage" enctype="multipart/form-data">
+              <div class="form-label-group">
+                 <input type="input" class="form-control" name="addressee" id="addressee" aria-describedby="addressee"
+                   placeholder="Addressee" required/>
+                <label for="name-input">Addressee</label>
+                  <p id="adressError"></p>
+              </div>
+                <div class="form-label-group">
+                 <input type="input" class="form-control" name="id-postbox" id="id-postbox" aria-describedby="id-postbox"
+                   placeholder="ID post box" required/>
+                <label for="id-postbox">ID post box</label>
+                    <p id="id_postboxError"></p>
+              </div>
+                <div class="form-label-group">
+                 <input type="input" class="form-control" name="size" id="size" aria-describedby="username"
+                   placeholder="Size of package" required/>
+                <label for="size">Size of package</label>
+                    <p id="sizeError"></p>
+              </div>
+              <div class="custom-control custom-checkbox mb-3">
+                <input type="checkbox" class="custom-control-input" id="customCheck1" required>
+                <label class="custom-control-label" for="customCheck1">Accept rules</label>
+              </div>
+              <button id="register" name="register" class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">send the package</button>
+              <hr class="my-4">
+            </form>
+             <a href="#"> <button class="btn btn-lg btn-google btn-block text-uppercase"><i class="fab fa-google mr-2"></i> Prizes</button></a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+{% block content %}
+     <div class="col-12">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+           <th scope="col">Uid</th>
+            <th scope="col">Addressee</th>
+            <th scope="col">Size</th>
+            <th scope="col">ID post office box</th>
+            <th scope="col">Creation date</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+              {% for message in get_flashed_messages() %}
+
+    <tbody>
+          <tr>
+              <th scope="col">{{ message[5] }}</th>
+            <th scope="row">{{ message[1] }}</th>
+            <td>{{ message[3] }}</td>
+            <td>{{ message[2] }}</td>
+            <td>{{ message[4] }}</td>
+            <td>
+                <button type="button" class="btn btn-dark"><a href="/sender/deletepackage/{{message[5]}}">Delete</a><i class="far fa-trash-alt"></i></button>
+            </td>
+          </tr>
+        </tbody>
+    {% endfor %}
+   </table>
+
+    {% block page_content %}{% endblock %}
+        </div>
+{% endblock %}
+
+
+
+
+
+
+
+
+</body>
+
+
+<footer class="page-footer font-small unique-color-dark pt-4">
+
+  <div class="footer-copyright text-center py-3">? 2020 Copyright:
+    <a href="https://github.com/PawelOsinskii/aplikacjewebowe" target="_blank"> github (develop)</a>
+  </div>
+
+
+</footer>
+
+
+</html>

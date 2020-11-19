@@ -1,0 +1,115 @@
+<!doctype>
+<html>
+<head>
+    <script defer src="/static/main.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="icon" href="/static/image/logoSamolot.jpg" sizes="16x16" type="image/png">
+    <meta http-equiv="Content-type" content="text/html; charset=iso-8859-2"/>
+    <meta http-equiv="Content-Language" content="pl"/>
+    <meta name="Paweł Osiński" content="Cygnus"/>
+    <title>Post Premium - SignUp</title>
+</head>
+
+
+
+<div class="topnav">
+    <a href="/">Home</a>
+    <a class="active" href="#">Sign-Up</a>
+    <a href="/sender/login">Log-in</a>
+</div>
+<body>
+
+
+{% block content %}
+<div class="container">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% block page_content %}{% endblock %}
+</div>
+{% endblock %}
+
+<div class="m-lg-5">
+    <form method="POST" action="/sender/register" enctype="multipart/form-data" id="registerForm">
+
+        <div class="form-group">
+            <label for="firstname">First Name</label>
+            <input type="input" class="form-control" id="firstname" name="firstname" aria-describedby="firstname"
+                   placeholder="" required/>
+            <small id="imię" class="form-text text-muted">here is place for your name.</small>
+            <p id="firstname-error"></p>
+        </div>
+        <div class="form-group">
+            <label for="lastname">Last name</label>
+            <input type="input" class="form-control" name="lastname" id="lastname" aria-describedby="lastname"
+                   placeholder="" required/>
+            <small id="nazwisko" class="form-text text-muted">here is place for your lastname</small>
+            <p id="lastname-error"></p>
+        </div>
+
+        <div class="form-group">
+            <label for="email">email</label>
+            <input type="input" class="form-control" name="email" id="email" aria-describedby="email"
+                   placeholder="" required/>
+            <small id="email" class="form-text text-muted">here is place for your email</small>
+            <p id="email-error"></p>
+        </div>
+
+        <div class="form-group">
+            <label for="login-input">Login</label>
+            <input type="input" class="form-control" name="login" id="login-input" aria-describedby="username"
+                   placeholder="" required/>
+            <small id="username-komunikat" class="form-text text-muted">here is place for your login</small>
+            <p id="login-error"></p>
+            <p id="login-good"></p>
+
+        </div>
+
+        <div class="form-group">
+            <label for="Wpisz hasło">Password</label>
+            <input name="password" type="password" class="form-control" id="password-input1" placeholder="Password" required/>
+            <p id="password-error1"></p>
+        </div>
+
+
+        <div class="form-group">
+            <label for="Wpisz ponownie hasło">Repeat password</label>
+            <input name="password2" type="password" class="form-control" id="password-input2" required
+                   placeholder="Repeat your password"/>
+            <p id="password-error2"></p>
+        </div>
+
+
+         <div class="form-group">
+            <label for="login-input">Adress</label>
+            <input type="input" class="form-control" name="address" id="address-input" aria-describedby="address"
+                   placeholder="address" required/>
+            <small id="adress-komunikat" class="form-text text-muted">here is place for your address</small>
+        </div>
+
+
+        <button type="submit" id="register" class="btn btn-primary">Send</button>
+
+    </form>
+</div>
+
+
+</body>
+
+
+<footer class="page-footer font-small unique-color-dark pt-4">
+
+    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+        <a href="https://github.com/PawelOsinskii/aplikacjewebowe" target="_blank"> github</a>
+    </div>
+
+
+</footer>
+
+
+</html>
