@@ -35,12 +35,6 @@ from bcrypt import hashpw, gensalt, checkpw
 #  token = encode(payload,)
 # return token
 
-@app.before_request
-def before_request():
-    session.permanent = True
-    app.permanent_session_lifetime = timedelta(minutes=5)
-
-
 def is_user(username):
     return db.hexists(f"user:{username}", "password")
 
@@ -49,6 +43,8 @@ def save_user(email, username, password, address):
     salt = gensalt(5)
     password = password.encode()
     hashed = hashpw(password, salt)
+    if not is_redis_available(db):
+        return render_template("sender/wrong_connection.html")
     db.hset(f"user:{username}", "password", hashed)
     db.hset(f"user:{username}", "email", email)
     db.hset(f"user:{username}", "address", address)
@@ -57,6 +53,8 @@ def save_user(email, username, password, address):
 
 def verify_user(username, password):
     password = password.encode()
+    if not is_redis_available(db):
+        return render_template("sender/wrong_connection.html")
     hashed = db.hget(f"user:{username}", "password")
     if not hashed:
         print(f"Wrong password or username!")
@@ -78,7 +76,9 @@ def redirect(url, status=301):
 
 @app.route('/')
 def index():
-    return render_template("index.html")
+    if "username" not in session:
+        return render_template("index.html")
+    return render_template("index_after_login.html")
 
 
 @app.route('/sender/register', methods=['GET'])
@@ -133,7 +133,10 @@ def register():
 
 @app.route('/sender/login', methods=['GET'])
 def login_form():
-    return render_template("sender/login.html")
+    if "username" not in session:
+        return render_template("sender/login.html")
+    flash(f'Welcome {session["username"]} in our website, now you can send the parcel. Do you know our offer?')
+    return render_template("sender/login_after_login.html")
 
 
 @app.route('/sender/isLogin/<user>', methods=['GET'])
@@ -161,12 +164,10 @@ def login():
         return redirect(url_for('login_form'))
 
     flash(f"Welcome {username} in our website, now you can send the parcel. Do you know our offer?")
-    session["username"] = True
-
+    session["username"] = username
     now = datetime.datetime.now()
-    session["USERNAME"] = username
     session['logged-at'] = now.strftime("%m/%d/%Y, %H:%M:%S")
-    return redirect(url_for('login_form'))
+    return render_template("sender/login_after_login.html")
 
 
 @app.route('/sender/logout', methods=['GET'])
@@ -181,10 +182,16 @@ def logout():
 
 @app.route('/sender/dashboard', methods=['GET'])
 def dashboard():
+    if not is_redis_available(db):
+        return render_template("sender/wrong_connection.html")
     if "username" not in session:
         flash("the first you need log on")
         return redirect(url_for("login_form"))
-    flash(f'Hello {session["USERNAME"]} here you can apply for sending package. ')
+    list_of_packages = db.hgetall(f'package:{session["username"]}')
+    if list_of_packages:
+        for key in list_of_packages:
+            position = list_of_packages[key]
+            flash(str(position).split('|'))
     return render_template("sender/dashboard.html")
 
 
@@ -209,7 +216,7 @@ def create_package():
     if "username" not in session:
         flash("the first you need log on")
         return redirect(url_for("dashboard"))
-    username = session["USERNAME"]
+    username = session["username"]
 
     if addressee and id_postbox and size:
         success = save_package(addressee, id_postbox, size, date, uid, username)
@@ -218,13 +225,35 @@ def create_package():
             return redirect(url_for("dashboard"))
     else:
         return redirect(url_for("dashboard"))
-    flash("the package has been shipped")
     return redirect(url_for("dashboard"))
 
 
 def save_package(addressee, id_postbox, size, date, uid, username):
+    if not is_redis_available(db):
+        return render_template("sender/wrong_connection.html")
     db.hset(f"package:{username}", uid,
-            (addressee + '|' + id_postbox + "|" + size + "|" + date + "|"))
+            ('cos |' + addressee + '|' + id_postbox + "|" + size + "|" + date + "|" + uid))
+    return True
+
+
+@app.route('/sender/deletepackage/<package>', methods=['GET'])
+def delete_package(package):
+    if not is_redis_available(db):
+        return render_template("sender/wrong_connection.html")
+    result =  str(package).replace("'", '')
+    result = str(result).replace('"', '')
+    wynik = db.hdel(f'package:{session["username"]}', result)
+    print(wynik)
+    return redirect(url_for("dashboard"))
+
+
+def is_redis_available(r):
+    try:
+        r.ping()
+        print("Successfully connected to redis")
+    except (Redis.exceptions.ConnectionError, ConnectionRefusedError):
+        print("Redis connection error!")
+        return False
     return True
 
 
