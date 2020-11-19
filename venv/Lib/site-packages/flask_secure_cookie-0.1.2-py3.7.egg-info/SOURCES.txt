@@ -1,0 +1,8 @@
+setup.cfg
+setup.py
+flask_secure_cookie/__init__.py
+flask_secure_cookie.egg-info/PKG-INFO
+flask_secure_cookie.egg-info/SOURCES.txt
+flask_secure_cookie.egg-info/dependency_links.txt
+flask_secure_cookie.egg-info/requires.txt
+flask_secure_cookie.egg-info/top_level.txt

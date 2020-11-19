@@ -1,0 +1,6 @@
+Flask
+
+[test]
+nose
+coverage
+mock
