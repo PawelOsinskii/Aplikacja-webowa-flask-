@@ -4,4 +4,3 @@ gunicorn==19.9.0
 python-dotenv
 redis
 bcrypt
-jwt

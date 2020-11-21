@@ -1,11 +1,11 @@
 import uuid
 import datetime
-from flask import Flask, render_template, redirect, jsonify, g
+from flask import Flask, render_template, redirect, jsonify
 from flask import request, make_response, session
 from flask import flash, url_for
 from flask_session import Session
 from redis import Redis, StrictRedis
-
+from bcrypt import hashpw, gensalt, checkpw
 from os import getenv
 from dotenv import load_dotenv
 
@@ -28,7 +28,7 @@ app.secret_key = getenv('SECRET_KEY')
 ses = Session(app)
 app.debug = False
 
-from bcrypt import hashpw, gensalt, checkpw
+
 
 
 
