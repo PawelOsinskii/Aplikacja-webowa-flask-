@@ -1,6 +1,6 @@
 Flask-Session
 Flask==1.1.2
-gunicorn==20.0.4
+gunicorn
 python-dotenv
 redis
 bcrypt
