@@ -29,7 +29,10 @@ ses = Session(app)
 app.debug = False
 
 
-
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
+    app.permanent_session_lifetime = datetime.timedelta(minutes=5)
 
 
 def is_user(username):
@@ -169,11 +172,9 @@ def login():
 
 @app.route('/sender/logout', methods=['GET'])
 def logout():
-    if "username" not in session:
-        flash("the first you need log on")
-        return redirect(url_for("login_form"))
     session.clear()
     flash("Logout success")
+    session.clear()
     return redirect(url_for('login_form'))
 
 
