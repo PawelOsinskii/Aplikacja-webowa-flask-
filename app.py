@@ -19,9 +19,7 @@ db = StrictRedis(REDIS_HOST, db=12, password=REDIS_PASS)  # wczytywać połącze
 SESSION_TYPE = 'redis'  # trzymanie danych sesyjnych w redisie
 SESSION_REDIS = db  # obiekt reprezentujacy połączene
 SESSION_COOKIE_SECURE = True
-REMEMBER_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
-REMEMBER_COOKIE_HTTPONLY = True
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.secret_key = getenv('SECRET_KEY')
