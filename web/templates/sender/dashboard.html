@@ -89,7 +89,17 @@
             <td>{{ message[3] }}</td>
             <td>{{ message[2] }}</td>
             <td>{{ message[4] }}</td>
-            <td>{{ message[6] }}</td>
+            <td>
+                {%if message[6] == '1.0'  %}
+                     Nadane
+                {%endif%}
+            {%if message[6] == '2.0'  %}
+                     Odebrane przez kuriera
+                {%endif%}
+            {%if message[6] == '3.0'  %}
+                     Dostarczone przez kuriera
+                {%endif%}
+            </td>
             <td>
                 {% if message[6] =='1.0' %}
 
