@@ -15,8 +15,8 @@ from jwt import encode, decode
 
 load_dotenv()  # zaczytuje .env
 REDIS_LOKAL = getenv('REDIS_LOKAL')
-REDIS_HOST = getenv('REDIS_HOST')
-REDIS_PASS = getenv('REDIS_PASS')
+REDIS_HOST = 'ec2-3-121-188-229.eu-central-1.compute.amazonaws.com'
+REDIS_PASS = 'V&2asU5aDYCFuuvacpSodx8DFjdj$'
 db = StrictRedis(REDIS_HOST, db=23, password=REDIS_PASS)  # wczytywać połączenie z env
 SESSION_TYPE = 'redis'  # trzymanie danych sesyjnych w redisie
 SESSION_REDIS = db  # obiekt reprezentujacy połączene
@@ -26,7 +26,7 @@ SESSION_COOKIE_HTTPONLY = True
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 300
 app.config.from_object(__name__)
-app.secret_key = getenv('SECRET_KEY')
+app.secret_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ'
 ses = Session(app)
 app.debug = False
 
