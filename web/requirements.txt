@@ -4,3 +4,6 @@ gunicorn
 python-dotenv
 redis
 bcrypt
+requests
+bcrypt
+PyJWT==1.6.1

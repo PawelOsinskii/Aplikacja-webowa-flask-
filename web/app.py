@@ -1,5 +1,7 @@
 import uuid
 import datetime
+
+import jwt
 from flask import Flask, render_template, redirect, jsonify
 from flask import request, make_response, session
 from flask import flash, url_for
@@ -8,19 +10,21 @@ from redis import Redis, StrictRedis
 from bcrypt import hashpw, gensalt, checkpw
 from os import getenv
 from dotenv import load_dotenv
-
-# from jwt import encode, decode
+import requests
+from jwt import encode, decode
 
 load_dotenv()  # zaczytuje .env
 REDIS_LOKAL = getenv('REDIS_LOKAL')
 REDIS_HOST = getenv('REDIS_HOST')
 REDIS_PASS = getenv('REDIS_PASS')
-db = StrictRedis(REDIS_HOST, db=12, password=REDIS_PASS)  # wczytywać połączenie z env
+db = StrictRedis(REDIS_HOST, db=23, password=REDIS_PASS)  # wczytywać połączenie z env
 SESSION_TYPE = 'redis'  # trzymanie danych sesyjnych w redisie
 SESSION_REDIS = db  # obiekt reprezentujacy połączene
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
+
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 300
 app.config.from_object(__name__)
 app.secret_key = getenv('SECRET_KEY')
 ses = Session(app)
@@ -153,7 +157,6 @@ def is_available(user):
 def login():
     username = request.form.get('login')
     password = request.form.get('password')
-    app.logger.warning(username + '+' + password)
     if not username and not password:
         flash("You need fill in username AND password")
         return redirect(url_for('login_form'))
@@ -183,63 +186,78 @@ def dashboard():
     if "username" not in session:
         flash("the first you need log on")
         return redirect(url_for("login_form"))
-    list_of_packages = db.hgetall(f'package:{session["username"]}')
-    if list_of_packages:
-        for key in list_of_packages:
-            position = list_of_packages[key]
-            flash(str(position).split('|'))
+    username = session["username"]
+    encoded_jwt = jwt.encode({'username': username}, app.secret_key, algorithm='HS256')
+    _jwt = str(encoded_jwt).split("'")
+    jwt_ = _jwt[1]
+    headers = {"Authorization": "Bearer " + jwt_}
+    r = requests.get(f'https://pawelosinskiprzesylkiprojekt.herokuapp.com/labels/' + username, headers=headers)
+    if r.status_code != 200:
+        flash("Brak połączenia z web service")
+        return render_template("sender/login_after_login.html")
+    json = r.json()
+    for table in json['_embedded']['items']:
+        uid = table['uid']
+        size = table['size']
+        address = table['address']
+        id_post_office = table['id_post_office']
+        date = table['date']
+        status = table['status']
+        position = f'cos|{address} | {id_post_office} | {size} | {date} | {uid} |{status}'
+        flash(str(position).split('|'))
     return render_template("sender/dashboard.html")
 
 
 @app.route('/sender/createpackage', methods=['POST'])
 def create_package():
     addressee = request.form.get('addressee')
-    if not addressee:
-        flash("No addressee provided")
-
     id_postbox = request.form.get('id-postbox')
-    if not id_postbox:
-        flash("No id-postbox provided")
-
     size = request.form.get('size')
-    if not size:
-        flash("No size provided")
     now = datetime.datetime.now()
 
-    date = now.strftime("%m/%d/%Y, %H:%M:%S")
 
+    date = now.strftime("%m/%d/%Y, %H:%M:%S")
     uid = str(uuid.uuid4())
     if "username" not in session:
         flash("the first you need log on")
         return redirect(url_for("dashboard"))
     username = session["username"]
+    encoded_jwt = jwt.encode({'username': username}, app.secret_key, algorithm='HS256')
+    _jwt = str(encoded_jwt).split("'")
+    jwt_ = _jwt[1]
+    headers = {"Authorization": "Bearer "+ jwt_}
 
+    app.logger.warning(headers)
     if addressee and id_postbox and size:
-        success = save_package(addressee, id_postbox, size, date, uid, username)
-        if not success:
-            flash("error in during saving, please try again")
+        res = requests.post(f'https://pawelosinskiprzesylkiprojekt.herokuapp.com/labels/{username}', json={"address": addressee,
+                                                                              "id_post_office": id_postbox,
+                                                                              "date": date,
+                                                                              "uid": uid,
+                                                                              "size": size}, headers=headers)
+        app.logger.warning(res.text)
+        if res.status_code == 500:
+            flash('Błąd połączenia z web service, spróbuj później')
+            return render_template("sender/login_after_login.html")
+
+        if not res:
             return redirect(url_for("dashboard"))
     else:
         return redirect(url_for("dashboard"))
     return redirect(url_for("dashboard"))
 
 
-def save_package(addressee, id_postbox, size, date, uid, username):
-    if not is_redis_available(db):
-        return render_template("sender/wrong_connection.html")
-    db.hset(f"package:{username}", uid,
-            ('cos |' + addressee + '|' + id_postbox + "|" + size + "|" + date + "|" + uid))
-    return True
-
 
 @app.route('/sender/deletepackage/<package>', methods=['GET'])
 def delete_package(package):
-    if not is_redis_available(db):
-        return render_template("sender/wrong_connection.html")
-    result =  str(package).replace("'", '')
+    username = session["username"]
+    result = str(package).replace("'", '').strip()
     result = str(result).replace('"', '')
-    wynik = db.hdel(f'package:{session["username"]}', result)
-    print(wynik)
+    res = requests.delete(f'https://pawelosinskiprzesylkiprojekt.herokuapp.com/labels/{username}/{result}')
+    if res.status_code == 500:
+        flash('Błąd połączenia z web service, spróbuj później')
+        return render_template("sender/login_after_login.html")
+    app.logger.warning(res.text)
+
     return redirect(url_for("dashboard"))
 
 

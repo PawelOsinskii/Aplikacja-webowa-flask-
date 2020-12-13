@@ -17,7 +17,12 @@
          <a href="/sender/logout">Logout</a>
      </div>
 <body>
-
+{% block body %}
+  <h1></h1>
+  {% if error %}
+    <p class=error><strong>Error:</strong> {{ error }}
+  {% endif %}
+{% endblock %}
 
 <div class="container">
     <div class="row">
@@ -71,6 +76,7 @@
             <th scope="col">Size</th>
             <th scope="col">ID post office box</th>
             <th scope="col">Creation date</th>
+            <th scope="col">Status</th>
             <th scope="col">Delete</th>
           </tr>
         </thead>
@@ -83,8 +89,15 @@
             <td>{{ message[3] }}</td>
             <td>{{ message[2] }}</td>
             <td>{{ message[4] }}</td>
+            <td>{{ message[6] }}</td>
             <td>
-                <button type="button" class="btn btn-dark"><a href="/sender/deletepackage/{{message[5]}}">Delete</a><i class="far fa-trash-alt"></i></button>
+                {% if message[6] =='1.0' %}
+
+                        <button type="button" class="btn btn-dark"><a href="/sender/deletepackage/{{message[5]}}">Delete</a><i class="far fa-trash-alt"></i></button>
+                {%endif%}
+
+
+
             </td>
           </tr>
         </tbody>
