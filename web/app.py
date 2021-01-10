@@ -250,11 +250,11 @@ def logout():
         session.clear()
         # Redirect user to logout endpoint
         session.pop('profile')
-        params = {'returnTo': url_for('home', _external=True), 'client_id': 'WS8rrkwKL0Nx3zrXF0rdAqU238zExKfA'}
-        request.get(auth0.api_base_url + '/v2/logout?' + urlencode(params))
+        params = {'returnTo': url_for('home', _external=True), 'client_id': 'VQS2zf4jPI4JJgXY4elqLcOYxFF4LUo7'}
+
         session.clear()
         flash("Logout success")
-        return redirect(url_for('login_form'))
+        return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
     session.pop('username')
     session.clear()
     session["__invalidate__"] = True
