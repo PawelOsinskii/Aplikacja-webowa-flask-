@@ -1,6 +1,19 @@
 import uuid
 import datetime
+from functools import wraps
+import json
+from os import environ as env
+from werkzeug.exceptions import HTTPException
 
+from dotenv import load_dotenv, find_dotenv
+from flask import Flask
+from flask import jsonify
+from flask import redirect
+from flask import render_template
+from flask import session
+from flask import url_for
+from authlib.integrations.flask_client import OAuth
+from six.moves.urllib.parse import urlencode
 import jwt
 import oauth as oauth
 from flask import Flask, render_template, redirect, jsonify
@@ -25,6 +38,9 @@ SESSION_REDIS = db  # obiekt reprezentujacy połączene
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
 
+app = Flask(__name__)
+
+oauth = OAuth(app)
 
 auth0 = oauth.register(
     'auth0',
@@ -38,7 +54,7 @@ auth0 = oauth.register(
     },
 )
 
-app = Flask(__name__)
+
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 300
 app.config.from_object(__name__)
 app.secret_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ'
