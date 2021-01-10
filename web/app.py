@@ -293,7 +293,7 @@ def dashboard():
         status = table['status']
         position = f'cos|{address} | {id_post_office} | {size} | {date} | {uid} |{status}'
         flash(str(position).split('|'))
-    return render_template("sender/login")
+    return render_template("sender/dashboard.html")
 
 
 @app.route('/sender/createpackage', methods=['POST'])
