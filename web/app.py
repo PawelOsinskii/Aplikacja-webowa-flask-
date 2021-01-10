@@ -133,6 +133,8 @@ def callback_handling():
         session["username"] = userinfo['name']
         now = datetime.datetime.now()
         session['logged-at'] = now.strftime("%m/%d/%Y, %H:%M:%S")
+        if not is_user(session["username"]):
+            success = save_user(session["username"], session["username"], session["username"], session["username"])
         return render_template("sender/login_after_login.html")
     flash(f"login failed")
     return render_template("sender/login.html")
