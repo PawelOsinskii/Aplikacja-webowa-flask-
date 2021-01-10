@@ -39,7 +39,7 @@ SESSION_COOKIE_HTTPONLY = True
 
 app = Flask(__name__)
 
-AUTH0_CALLBACK_URL = 'https://pawelosinski123.herokuapp.com/'
+AUTH0_CALLBACK_URL = 'https://pawelosinski123.herokuapp.com/callback'
 AUTH0_CLIENT_ID = 'VQS2zf4jPI4JJgXY4elqLcOYxFF4LUo7'
 AUTH0_CLIENT_SECRET = 'PPiGw2iqJTKjl8JWeTbh5J6qh94TzvvURcGLeDqVAV_-X2Dds15OqxjqBtXImnqg'
 AUTH0_DOMAIN = 'paawel97.eu.auth0.com'
@@ -155,7 +155,7 @@ def dashboardauth():
 
 @app.route('/loginoauth')
 def loginouath():
-    return auth0.authorize_redirect(redirect_uri='/')
+    return auth0.authorize_redirect(redirect_uri='https://pawelosinskiprzesylkiprojekt.herokuapp.com/')
 
 
 @app.route('/')
