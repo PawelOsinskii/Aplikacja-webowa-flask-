@@ -245,6 +245,9 @@ def login():
 
 @app.route('/sender/logout', methods=['GET'])
 def logout():
+    if "username" not in session:
+        flash("logout")
+        return redirect(url_for("login_form"))
     if "profile" in session:
         # Clear session stored data
         session.clear()
@@ -253,9 +256,6 @@ def logout():
         session.pop('username')
         session["__invalidate__"] = True
         params = {'returnTo': url_for('https://pawelosinski123.herokuapp.com/', _external=True), 'client_id': 'VQS2zf4jPI4JJgXY4elqLcOYxFF4LUo7'}
-
-        session.clear()
-        flash("Logout success")
         return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
     session.pop('username')
     session.clear()
@@ -293,7 +293,7 @@ def dashboard():
         status = table['status']
         position = f'cos|{address} | {id_post_office} | {size} | {date} | {uid} |{status}'
         flash(str(position).split('|'))
-    return render_template("sender/dashboard.html")
+    return render_template("sender/login")
 
 
 @app.route('/sender/createpackage', methods=['POST'])
