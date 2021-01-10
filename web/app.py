@@ -285,6 +285,7 @@ def dashboard():
         return redirect(url_for("login_form"))
     username = session["username"]
     encoded_jwt = jwt.encode({'username': username}, app.secret_key, algorithm='HS256')
+    print(str(encoded_jwt))
     _jwt = str(encoded_jwt).split("'")
     jwt_ = _jwt[1]
     headers = {"Authorization": "Bearer " + jwt_}
