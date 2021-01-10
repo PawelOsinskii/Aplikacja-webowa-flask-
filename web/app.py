@@ -140,30 +140,11 @@ def callback_handling():
     return render_template("sender/login.html")
 
 
-def requires_auth(f):
-  @wraps(f)
-  def decorated(*args, **kwargs):
-    if 'profile' not in session or "username" not in session:
-        flash(f"login failed")
-        return render_template("sender/login.html")
-    return f(*args, **kwargs)
 
-  return decorated
-
-@app.route('/dashboardauth')
-@requires_auth
-def dashboardauth():
-    return render_template('dashboardauth.html',
-                           userinfo=session['profile'],
-                           userinfo_pretty=json.dumps(session['jwt_payload'], indent=4))
 
 @app.route('/loginoauth')
 def loginouath():
     return auth0.authorize_redirect(redirect_uri='https://pawelosinski123.herokuapp.com/callback')
-
-
-
-
 
 
 
@@ -270,9 +251,15 @@ def logout():
         # Redirect user to logout endpoint
         params = {'returnTo': url_for('home', _external=True), 'client_id': 'WS8rrkwKL0Nx3zrXF0rdAqU238zExKfA'}
         request.get(auth0.api_base_url + '/v2/logout?' + urlencode(params))
+        session.clear()
+        flash("Logout success")
+        return redirect(url_for('login_form'))
+    session.pop('username')
+    session.clear()
+    session["__invalidate__"] = True
     session.clear()
     flash("Logout success")
-    session.clear()
+
     return redirect(url_for('login_form'))
 
 
