@@ -40,15 +40,23 @@ SESSION_COOKIE_HTTPONLY = True
 
 app = Flask(__name__)
 
+AUTH0_CALLBACK_URL = 'https://pawelosinski123.herokuapp.com/'
+AUTH0_CLIENT_ID = 'VQS2zf4jPI4JJgXY4elqLcOYxFF4LUo7'
+AUTH0_CLIENT_SECRET = 'PPiGw2iqJTKjl8JWeTbh5J6qh94TzvvURcGLeDqVAV_-X2Dds15OqxjqBtXImnqg'
+AUTH0_DOMAIN = 'paawel97.eu.auth0.com'
+AUTH0_BASE_URL = 'https://' + 'paawel97.eu.auth0.com'
+
+
+
 oauth = OAuth(app)
 
 auth0 = oauth.register(
     'auth0',
-    client_id='VQS2zf4jPI4JJgXY4elqLcOYxFF4LUo7',
-    client_secret='PPiGw2iqJTKjl8JWeTbh5J6qh94TzvvURcGLeDqVAV_-X2Dds15OqxjqBtXImnqg',
-    api_base_url='https://paawel97.eu.auth0.com',
-    access_token_url='https://paawel97.eu.auth0.com/oauth/token',
-    authorize_url='https://paawel97.eu.auth0.com/authorize',
+    client_id=AUTH0_CLIENT_ID,
+    client_secret=AUTH0_CLIENT_SECRET,
+    api_base_url=AUTH0_BASE_URL,
+    access_token_url=AUTH0_BASE_URL + '/oauth/token',
+    authorize_url=AUTH0_BASE_URL + '/authorize',
     client_kwargs={
         'scope': 'openid profile email',
     },
