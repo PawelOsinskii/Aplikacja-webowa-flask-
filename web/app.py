@@ -128,15 +128,22 @@ def callback_handling():
         'name': userinfo['name'],
         'picture': userinfo['picture']
     }
-    return redirect('/dashboardauth')
+    if userinfo['name'] is not None:
+        flash(f"Welcome {userinfo['name']} in our website, now you can send the parcel. Do you know our offer?")
+        session["username"] = userinfo['name']
+        now = datetime.datetime.now()
+        session['logged-at'] = now.strftime("%m/%d/%Y, %H:%M:%S")
+        return render_template("sender/login_after_login.html")
+    flash(f"login failed")
+    return render_template("sender/login.html")
 
 
 def requires_auth(f):
   @wraps(f)
   def decorated(*args, **kwargs):
-    if 'profile' not in session:
-      # Redirect to Login page here
-      return redirect('/login')
+    if 'profile' not in session or "username" not in session:
+        flash(f"login failed")
+        return render_template("sender/login.html")
     return f(*args, **kwargs)
 
   return decorated
@@ -148,14 +155,14 @@ def dashboardauth():
                            userinfo=session['profile'],
                            userinfo_pretty=json.dumps(session['jwt_payload'], indent=4))
 
-
-
-
-
-
 @app.route('/loginoauth')
 def loginouath():
     return auth0.authorize_redirect(redirect_uri='https://pawelosinski123.herokuapp.com/callback')
+
+
+
+
+
 
 
 @app.route('/')
@@ -255,6 +262,12 @@ def login():
 
 @app.route('/sender/logout', methods=['GET'])
 def logout():
+    if "profile" in session:
+        # Clear session stored data
+        session.clear()
+        # Redirect user to logout endpoint
+        params = {'returnTo': url_for('home', _external=True), 'client_id': 'WS8rrkwKL0Nx3zrXF0rdAqU238zExKfA'}
+        return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
     session.clear()
     flash("Logout success")
     session.clear()
