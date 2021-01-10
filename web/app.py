@@ -155,7 +155,7 @@ def dashboardauth():
 
 @app.route('/loginoauth')
 def loginouath():
-    return auth0.authorize_redirect(redirect_uri='https://pawelosinskiprzesylkiprojekt.herokuapp.com/')
+    return auth0.authorize_redirect(redirect_uri='https://pawelosinski123.herokuapp.com/callback')
 
 
 @app.route('/')
