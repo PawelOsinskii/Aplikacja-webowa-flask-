@@ -1,17 +1,5 @@
 import uuid
 import datetime
-from functools import wraps
-import json
-from os import environ as env
-from werkzeug.exceptions import HTTPException
-
-from dotenv import load_dotenv, find_dotenv
-from flask import Flask
-from flask import jsonify
-from flask import redirect
-from flask import render_template
-from flask import session
-from flask import url_for
 from authlib.integrations.flask_client import OAuth
 from six.moves.urllib.parse import urlencode
 import jwt
@@ -21,7 +9,7 @@ from flask import flash, url_for
 from flask_session import Session
 from redis import Redis, StrictRedis
 from bcrypt import hashpw, gensalt, checkpw
-from os import getenv
+from os import getenv, environ
 from dotenv import load_dotenv
 import requests
 from jwt import encode, decode
@@ -29,8 +17,8 @@ from six import wraps
 
 load_dotenv()  # zaczytuje .env
 REDIS_LOKAL = getenv('REDIS_LOKAL')
-REDIS_HOST = 'ec2-3-121-188-229.eu-central-1.compute.amazonaws.com'
-REDIS_PASS = 'V&2asU5aDYCFuuvacpSodx8DFjdj$'
+REDIS_HOST =  environ.get('REDIS_HOST')#'ec2-3-121-188-229.eu-central-1.compute.amazonaws.com'
+REDIS_PASS = environ.get('REDIS_PASS')#'V&2asU5aDYCFuuvacpSodx8DFjdj$'
 db = StrictRedis(REDIS_HOST, db=23, password=REDIS_PASS)  # wczytywać połączenie z env
 SESSION_TYPE = 'redis'  # trzymanie danych sesyjnych w redisie
 SESSION_REDIS = db  # obiekt reprezentujacy połączene
@@ -39,11 +27,11 @@ SESSION_COOKIE_HTTPONLY = True
 
 app = Flask(__name__)
 
-AUTH0_CALLBACK_URL = 'https://pawelosinski123.herokuapp.com/callback'
-AUTH0_CLIENT_ID = 'VQS2zf4jPI4JJgXY4elqLcOYxFF4LUo7'
-AUTH0_CLIENT_SECRET = 'PPiGw2iqJTKjl8JWeTbh5J6qh94TzvvURcGLeDqVAV_-X2Dds15OqxjqBtXImnqg'
-AUTH0_DOMAIN = 'paawel97.eu.auth0.com'
-AUTH0_BASE_URL = 'https://' + 'paawel97.eu.auth0.com'
+AUTH0_CALLBACK_URL = environ.get('AUTH0_CALLBACK_URL')
+AUTH0_CLIENT_ID = environ.get('AUTH0_CLIENT_ID')
+AUTH0_CLIENT_SECRET = environ.get('AUTH0_CLIENT_SECRET')
+AUTH0_DOMAIN = environ.get('AUTH0_DOMAIN')
+AUTH0_BASE_URL = environ.get('AUTH0_BASE_URL')
 
 
 
