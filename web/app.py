@@ -250,7 +250,9 @@ def logout():
         session.clear()
         # Redirect user to logout endpoint
         session.pop('profile')
-        params = {'returnTo': url_for('home', _external=True), 'client_id': 'VQS2zf4jPI4JJgXY4elqLcOYxFF4LUo7'}
+        session.pop('username')
+        session["__invalidate__"] = True
+        params = {'returnTo': url_for('https://pawelosinski123.herokuapp.com/', _external=True), 'client_id': 'VQS2zf4jPI4JJgXY4elqLcOYxFF4LUo7'}
 
         session.clear()
         flash("Logout success")
