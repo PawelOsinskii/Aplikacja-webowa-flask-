@@ -1,9 +1,0 @@
-Flask-Session
-Flask==1.1.2
-gunicorn
-python-dotenv
-redis
-bcrypt
-requests
-bcrypt
-PyJWT==1.6.1
