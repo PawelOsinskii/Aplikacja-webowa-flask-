@@ -2,6 +2,7 @@ import uuid
 import datetime
 
 import jwt
+import oauth as oauth
 from flask import Flask, render_template, redirect, jsonify
 from flask import request, make_response, session
 from flask import flash, url_for
@@ -12,6 +13,7 @@ from os import getenv
 from dotenv import load_dotenv
 import requests
 from jwt import encode, decode
+from six import wraps
 
 load_dotenv()  # zaczytuje .env
 REDIS_LOKAL = getenv('REDIS_LOKAL')
@@ -22,6 +24,19 @@ SESSION_TYPE = 'redis'  # trzymanie danych sesyjnych w redisie
 SESSION_REDIS = db  # obiekt reprezentujacy połączene
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
+
+
+auth0 = oauth.register(
+    'auth0',
+    client_id='VQS2zf4jPI4JJgXY4elqLcOYxFF4LUo7',
+    client_secret='PPiGw2iqJTKjl8JWeTbh5J6qh94TzvvURcGLeDqVAV_-X2Dds15OqxjqBtXImnqg',
+    api_base_url='https://paawel97.eu.auth0.com',
+    access_token_url='https://paawel97.eu.auth0.com/oauth/token',
+    authorize_url='https://paawel97.eu.auth0.com/authorize',
+    client_kwargs={
+        'scope': 'openid profile email',
+    },
+)
 
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 300
@@ -74,6 +89,50 @@ def redirect(url, status=301):
     res = make_response('', status)
     res.headers['Location'] = url
     return res
+
+
+@app.route('/callback')
+def callback_handling():
+    # Handles response from token endpoint
+    auth0.authorize_access_token()
+    resp = auth0.get('userinfo')
+    userinfo = resp.json()
+
+    # Store the user information in flask session.
+    session['jwt_payload'] = userinfo
+    session['profile'] = {
+        'user_id': userinfo['sub'],
+        'name': userinfo['name'],
+        'picture': userinfo['picture']
+    }
+    return redirect('/dashboard')
+
+
+def requires_auth(f):
+  @wraps(f)
+  def decorated(*args, **kwargs):
+    if 'profile' not in session:
+      # Redirect to Login page here
+      return redirect('/login')
+    return f(*args, **kwargs)
+
+  return decorated
+
+@app.route('/dashboard')
+@requires_auth
+def dashboard():
+    return render_template('dashboard.html',
+                           userinfo=session['profile'],
+                           userinfo_pretty=json.dumps(session['jwt_payload'], indent=4))
+
+
+
+
+
+
+@app.route('/loginoauth')
+def login():
+    return auth0.authorize_redirect(redirect_uri='/')
 
 
 @app.route('/')

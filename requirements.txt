@@ -7,3 +7,5 @@ bcrypt
 requests
 bcrypt
 PyJWT==1.6.1
+authlib
+six
