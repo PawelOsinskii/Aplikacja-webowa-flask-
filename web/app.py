@@ -15,7 +15,6 @@ from flask import url_for
 from authlib.integrations.flask_client import OAuth
 from six.moves.urllib.parse import urlencode
 import jwt
-import oauth as oauth
 from flask import Flask, render_template, redirect, jsonify
 from flask import request, make_response, session
 from flask import flash, url_for
@@ -129,7 +128,7 @@ def callback_handling():
         'name': userinfo['name'],
         'picture': userinfo['picture']
     }
-    return redirect('/dashboard')
+    return redirect('/dashboardauth')
 
 
 def requires_auth(f):
@@ -142,10 +141,10 @@ def requires_auth(f):
 
   return decorated
 
-@app.route('/dashboard')
+@app.route('/dashboardauth')
 @requires_auth
-def dashboard():
-    return render_template('dashboard.html',
+def dashboardauth():
+    return render_template('dashboardauth.html',
                            userinfo=session['profile'],
                            userinfo_pretty=json.dumps(session['jwt_payload'], indent=4))
 
@@ -155,7 +154,7 @@ def dashboard():
 
 
 @app.route('/loginoauth')
-def login():
+def loginouath():
     return auth0.authorize_redirect(redirect_uri='/')
 
 
