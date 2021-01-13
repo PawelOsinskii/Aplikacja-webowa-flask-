@@ -36,12 +36,8 @@ AUTH0_DOMAIN = environ.get('AUTH0_DOMAIN')
 AUTH0_BASE_URL = 'https://' + str(environ.get('AUTH0_BASE_URL'))
 
 
-#todo tutaj treningowe
-db.lpush('testtest:notification', "wiado")
-db.lpush('testtest:notification', "1")
-db.lpush('testtest:notification', "wia2do")
-db.lpush('testtest:notification', "3")
-db.lpush('testtest:notification', "4")
+
+
 
 
 oauth = OAuth(app)
