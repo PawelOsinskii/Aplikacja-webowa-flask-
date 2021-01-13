@@ -1,5 +1,7 @@
 import uuid
 import datetime
+from time import sleep
+
 from authlib.integrations.flask_client import OAuth
 from six.moves.urllib.parse import urlencode
 import jwt
@@ -16,9 +18,9 @@ from jwt import encode, decode
 from six import wraps
 
 load_dotenv()  # zaczytuje .env
-REDIS_LOKAL = getenv('REDIS_LOKAL')
-REDIS_HOST =  environ.get('REDIS_HOST')#'ec2-3-121-188-229.eu-central-1.compute.amazonaws.com'
-REDIS_PASS = environ.get('REDIS_PASS')#'V&2asU5aDYCFuuvacpSodx8DFjdj$'
+#REDIS_LOKAL = environ.get('REDIS_LOKAL')
+REDIS_HOST =  environ.get('REDIS_HOST')
+REDIS_PASS = environ.get('REDIS_PASS')
 db = StrictRedis(REDIS_HOST, db=23, password=REDIS_PASS)  # wczytywać połączenie z env
 SESSION_TYPE = 'redis'  # trzymanie danych sesyjnych w redisie
 SESSION_REDIS = db  # obiekt reprezentujacy połączene
@@ -33,6 +35,13 @@ AUTH0_CLIENT_SECRET = environ.get('AUTH0_CLIENT_SECRET')
 AUTH0_DOMAIN = environ.get('AUTH0_DOMAIN')
 AUTH0_BASE_URL = 'https://' + str(environ.get('AUTH0_BASE_URL'))
 
+
+#todo tutaj treningowe
+db.lpush('testtest:notification', "wiado")
+db.lpush('testtest:notification', "1")
+db.lpush('testtest:notification', "wia2do")
+db.lpush('testtest:notification', "3")
+db.lpush('testtest:notification', "4")
 
 
 oauth = OAuth(app)
@@ -345,6 +354,22 @@ def is_redis_available(r):
         print("Redis connection error!")
         return False
     return True
+
+
+@app.route('/notifications')
+def notifications():
+    new_notifications = get_notification()
+    while not new_notifications:
+        sleep(1)
+        print('Checking ....')
+        new_notifications = get_notification()
+    return new_notifications
+
+
+def get_notification():
+    if session['username']:
+        username = session['username']
+        return db.lpop(f"{session['username']}:notification")
 
 
 if __name__ == '__main__':

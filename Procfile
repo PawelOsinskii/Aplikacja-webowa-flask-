@@ -1,2 +1,2 @@
-web: gunicorn --pythonpath web app:app
+web: gunicorn -w 3 -t 15 --pythonpath web app:app
 gunicorn
